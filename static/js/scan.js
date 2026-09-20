@@ -99,13 +99,12 @@ camStart.addEventListener('click', async function () {
     camStatus.textContent = 'idle';
     return;
   }
-   try {
-    // Prefer the rear camera at full resolution, with a graceful fallback.
+     try {
     var constraints = {
       video: {
         facingMode: { ideal: 'environment' },
-        width:  { ideal: 1920 },
-        height: { ideal: 1080 },
+        width:  { ideal: 1280 },
+        height: { ideal: 720 },
         aspectRatio: { ideal: 4/3 }
       },
       audio: false
@@ -113,13 +112,28 @@ camStart.addEventListener('click', async function () {
     try {
       stream = await navigator.mediaDevices.getUserMedia(constraints);
     } catch (e1) {
-      // Fallback: drop the resolution demands, keep the rear camera preference.
+      // Fallback: give up the resolution requirement, keep the rear camera preference.
       stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: { ideal: 'environment' } },
         audio: false
       });
     }
+
     cam.srcObject = stream;
+    cam.setAttribute('playsinline', '');   // iOS Safari needs this
+    cam.setAttribute('autoplay', '');      // start automatically
+    cam.muted = true;                      // required for autoplay to work
+
+    // Explicitly call play() — Chrome Android sometimes needs the nudge.
+    try { await cam.play(); } catch (_) {}
+
+    // Wait until metadata is loaded before reporting "live".
+    if (cam.readyState < 2) {
+      await new Promise(function (resolve) {
+        cam.addEventListener('loadedmetadata', resolve, { once: true });
+      });
+    }
+
     camStatus.textContent = 'live';
     camStart.textContent = 'Stop camera';
     camCapture.disabled = false;
