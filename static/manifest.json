@@ -1,0 +1,19 @@
+{
+  "name": "ALPR Fleet Management System",
+  "short_name": "ALPR Fleet",
+  "description": "Kingdom of Eswatini - Government Vehicle Monitoring",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0f2540",
+  "theme_color": "#0f2540",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/static/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

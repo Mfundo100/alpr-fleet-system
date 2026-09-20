@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Reports - ALPR Fleet{% endblock %}
+{% block page_title %}Reports &amp; Analytics{% endblock %}
+{% block page_sub %}Live distribution of scans and fleet state{% endblock %}
+{% block actions %}
+  <button class="btn btn-ghost" onclick="loadReports()">Refresh</button>
+{% endblock %}
+
+{% block content %}
+<section class="charts-grid">
+  <div class="card chart-card"><h3>Today's scan results</h3><canvas id="chartToday"></canvas></div>
+  <div class="card chart-card"><h3>All-time distribution</h3><canvas id="chartAll"></canvas></div>
+  <div class="card chart-card"><h3>Fleet status</h3><canvas id="chartFleet"></canvas></div>
+  <div class="card chart-card"><h3>Scans by ministry</h3><canvas id="chartMinistry"></canvas></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="/static/js/reports.js"></script>
+{% endblock %}

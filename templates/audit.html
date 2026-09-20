@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Audit Log - ALPR Fleet{% endblock %}
+{% block page_title %}Audit Log{% endblock %}
+{% block page_sub %}Every scan event recorded by the system{% endblock %}
+{% block actions %}
+  <button class="btn btn-ghost" id="exportBtn">Export CSV</button>
+{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="filters">
+    <label class="field"><span>From</span><input type="date" id="fFrom"></label>
+    <label class="field"><span>To</span><input type="date" id="fTo"></label>
+    <label class="field"><span>Plate</span><input id="fPlate" placeholder="SD-GOV-001"></label>
+    <label class="field"><span>Result</span>
+      <select id="fResult">
+        <option value="">All</option>
+        <option>AUTHORIZED</option><option>NOT_FOUND</option>
+        <option>SUSPENDED_DRIVER</option><option>EXPIRED_REG</option>
+        <option>EXPIRED_INS</option><option>UNAUTHORIZED</option>
+      </select>
+    </label>
+    <label class="checkbox"><input type="checkbox" id="fFlagged"> Flagged only</label>
+    <button class="btn btn-primary" id="applyBtn">Apply</button>
+    <button class="btn btn-ghost" id="clearBtn">Clear</button>
+  </div>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr>
+        <th>Time</th><th>Plate</th><th>Vehicle</th><th>Driver</th>
+        <th>Checkpoint</th><th>Officer</th><th>Dir.</th>
+        <th>Result</th><th>Notes</th><th></th>
+      </tr></thead>
+      <tbody id="auditBody"></tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/audit.js"></script>{% endblock %}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{% block title %}ALPR Fleet System{% endblock %}</title>
+  <meta name="theme-color" content="#0f2540">
+  <link rel="manifest" href="/static/manifest.json">
+  <link rel="icon" href="/static/icons/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">AL</div>
+        <div class="brand-text">
+          <span class="brand-title">ALPR Fleet</span>
+          <span class="brand-sub">Kingdom of Eswatini</span>
+        </div>
+      </div>
+      <nav class="nav">
+        {% for key, label, icon in nav_pages %}
+          <a class="nav-item {% if active == key %}active{% endif %}" href="/{{ key }}">
+            <span class="nav-icon">{{ icon }}</span><span>{{ label }}</span>
+          </a>
+        {% endfor %}
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-chip">
+          <div class="user-avatar">{{ (user.full_name or user.username or 'U')[0]|upper }}</div>
+          <div>
+            <div class="user-name">{{ user.full_name or user.username }}</div>
+            <div class="user-role">{{ user.role }}</div>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-block" id="logoutBtn">Sign out</button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="page-head">
+        <div>
+          <h1 class="page-title">{% block page_title %}{% endblock %}</h1>
+          <p class="page-sub">{% block page_sub %}{% endblock %}</p>
+        </div>
+        <div class="page-actions">{% block actions %}{% endblock %}</div>
+      </header>
+
+      <div id="toasts" class="toasts"></div>
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <script src="/static/js/common.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/static/sw.js').catch(function(){});
+    }
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - ALPR Fleet{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block page_sub %}Real-time overview of fleet activity{% endblock %}
+{% block actions %}
+  <button class="btn btn-ghost" onclick="loadDashboard()">Refresh</button>
+{% endblock %}
+
+{% block content %}
+<section class="kpi-grid" id="kpiGrid">
+  <div class="kpi"><span class="kpi-label">Scans today</span><span class="kpi-value" id="kpi-scans">-</span></div>
+  <div class="kpi"><span class="kpi-label">Incidents today</span><span class="kpi-value" id="kpi-incidents">-</span></div>
+  <div class="kpi"><span class="kpi-label">Flagged scans</span><span class="kpi-value" id="kpi-flagged">-</span></div>
+  <div class="kpi"><span class="kpi-label">Fleet size</span><span class="kpi-value" id="kpi-fleet">-</span></div>
+  <div class="kpi"><span class="kpi-label">Open alerts</span><span class="kpi-value" id="kpi-alerts">-</span></div>
+  <div class="kpi"><span class="kpi-label">Suspended drivers</span><span class="kpi-value" id="kpi-susp">-</span></div>
+</section>
+
+<section class="card">
+  <header class="card-head">
+    <h2>Live feed</h2>
+    <span class="muted">Latest 30 scans</span>
+  </header>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>Time</th><th>Plate</th><th>Vehicle</th><th>Checkpoint</th><th>Officer</th><th>Result</th></tr></thead>
+      <tbody id="feedBody"></tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/dashboard.js"></script>{% endblock %}

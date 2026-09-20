@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Drivers - ALPR Fleet{% endblock %}
+{% block page_title %}Drivers{% endblock %}
+{% block page_sub %}Authorised drivers and suspensions{% endblock %}
+{% block actions %}
+  <button class="btn btn-primary" id="drvAdd">+ Add driver</button>
+{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr>
+        <th>Name</th><th>License</th><th>Expiry</th><th>Phone</th>
+        <th>Ministry</th><th>Status</th><th></th>
+      </tr></thead>
+      <tbody id="drvBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<dialog id="drvDialog" class="dialog">
+  <form method="dialog" id="drvForm">
+    <h3 id="drvDialogTitle">Add driver</h3>
+    <div class="grid-2">
+      <label class="field"><span>Full name</span><input name="full_name" required></label>
+      <label class="field"><span>License number</span><input name="license_number" required></label>
+      <label class="field"><span>License expiry</span><input name="license_expiry" type="date"></label>
+      <label class="field"><span>Phone</span><input name="phone"></label>
+      <label class="field"><span>Ministry</span><select name="ministry_id" id="drvMinistry"></select></label>
+      <label class="field"><span>Status</span>
+        <select name="status"><option>ACTIVE</option><option>SUSPENDED</option></select>
+      </label>
+    </div>
+    <input type="hidden" name="id">
+    <div class="dialog-actions">
+      <button class="btn btn-ghost" value="cancel">Cancel</button>
+      <button class="btn btn-primary" id="drvSave" value="default">Save</button>
+    </div>
+  </form>
+</dialog>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/drivers.js"></script>{% endblock %}

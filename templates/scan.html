@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Scan - ALPR Fleet{% endblock %}
+{% block page_title %}Scan Vehicle{% endblock %}
+{% block page_sub %}Manual entry or camera-assisted capture{% endblock %}
+
+{% block content %}
+<section class="scan-grid">
+  <div class="card">
+    <header class="card-head"><h2>Verification</h2></header>
+    <form id="scanForm" class="form">
+      <label class="field">
+        <span>Plate number</span>
+        <input type="text" name="plate" id="plateInput" placeholder="SD-GOV-001" required autocomplete="off">
+      </label>
+      <label class="field">
+        <span>Direction</span>
+        <select name="direction">
+          <option value="ENTRY">ENTRY</option>
+          <option value="EXIT">EXIT</option>
+          <option value="PASSING">PASSING</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Checkpoint</span>
+        <select name="checkpoint_id" id="checkpointSelect"></select>
+      </label>
+      <label class="field">
+        <span>OCR confidence - <output id="confOut">90</output>%</span>
+        <input type="range" name="confidence" min="0" max="100" value="90" id="confRange">
+      </label>
+      <button class="btn btn-primary btn-block" type="submit">Verify plate</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <header class="card-head">
+      <h2>Camera (browser)</h2>
+      <span class="muted" id="camStatus">idle</span>
+    </header>
+    <div class="camera-wrap">
+      <video id="cam" playsinline muted></video>
+      <canvas id="camCanvas" hidden></canvas>
+    </div>
+    <div class="camera-actions">
+      <button class="btn btn-ghost" id="camStart">Start camera</button>
+      <button class="btn btn-primary" id="camCapture" disabled>Capture &amp; OCR</button>
+    </div>
+    <p class="muted small">Optional. OCR runs locally in your browser via Tesseract.js - no images leave your device.</p>
+  </div>
+
+  <div class="card result-card" id="resultCard">
+    <header class="card-head"><h2>Result</h2></header>
+    <div class="result-empty" id="resultEmpty">Waiting for a scan...</div>
+    <div class="result-body" id="resultBody" hidden>
+      <div class="result-badge" id="resultBadge"></div>
+      <dl class="result-meta" id="resultMeta"></dl>
+      <p class="result-notes" id="resultNotes"></p>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <header class="card-head"><h2>Session history</h2></header>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>Time</th><th>Plate</th><th>Direction</th><th>Result</th><th>Notes</th></tr></thead>
+      <tbody id="sessionBody"></tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.0/dist/tesseract.min.js" defer></script>
+<script src="/static/js/scan.js"></script>
+{% endblock %}

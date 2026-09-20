@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Alerts - ALPR Fleet{% endblock %}
+{% block page_title %}Alerts{% endblock %}
+{% block page_sub %}Automatic alerts raised by the scan engine{% endblock %}
+{% block actions %}
+  <label class="checkbox"><input type="checkbox" id="onlyOpen" checked> Only unresolved</label>
+{% endblock %}
+
+{% block content %}
+<section class="card">
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr>
+        <th>Time</th><th>Severity</th><th>Title</th><th>Message</th>
+        <th>Plate</th><th>Status</th><th></th>
+      </tr></thead>
+      <tbody id="alertBody"></tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}<script src="/static/js/alerts.js"></script>{% endblock %}

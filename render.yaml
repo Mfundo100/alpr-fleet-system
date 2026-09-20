@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: alpr-fleet-system
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 60
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_PATH
+        value: /var/data/alpr_fleet.db
+    disk:
+      name: alpr-data
+      mountPath: /var/data
+      sizeGB: 1
