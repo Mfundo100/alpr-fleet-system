@@ -99,12 +99,26 @@ camStart.addEventListener('click', async function () {
     camStatus.textContent = 'idle';
     return;
   }
-  try {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      toast('Camera needs HTTPS or localhost. You are on an insecure connection.', 'err');
-      return;
+   try {
+    // Prefer the rear camera at full resolution, with a graceful fallback.
+    var constraints = {
+      video: {
+        facingMode: { ideal: 'environment' },
+        width:  { ideal: 1920 },
+        height: { ideal: 1080 },
+        aspectRatio: { ideal: 4/3 }
+      },
+      audio: false
+    };
+    try {
+      stream = await navigator.mediaDevices.getUserMedia(constraints);
+    } catch (e1) {
+      // Fallback: drop the resolution demands, keep the rear camera preference.
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: 'environment' } },
+        audio: false
+      });
     }
-    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
     cam.srcObject = stream;
     camStatus.textContent = 'live';
     camStart.textContent = 'Stop camera';
@@ -125,7 +139,7 @@ camCapture.addEventListener('click', async function () {
   var dataURL = canvas.toDataURL('image/png');
 
   try {
-    var out = await Tesseract.recognize(dataURL, 'eng');
+    var out = await Tesseract.recognize(dataURL, 'eng', { });
     var text = (out && out.data && out.data.text) || '';
     var cleaned = text.toUpperCase().replace(/[^A-Z0-9-]/g, '');
     var match = cleaned.match(/[A-Z]{2}-?[A-Z0-9]{2,4}-?\d{3,4}/);
